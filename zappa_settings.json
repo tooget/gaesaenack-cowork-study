@@ -2,7 +2,6 @@
     "production": {
         "app_function": "app.app",
         "aws_region": "ap-northeast-2",
-        "profile_name": "default",
         "project_name": "gaesaenack-cowo",
         "runtime": "python3.7",
         "s3_bucket": "zappa-gaesaenack-api-bucket"

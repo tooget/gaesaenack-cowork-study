@@ -9,6 +9,7 @@ verify_ssl = true
 zappa = "*"
 flask = "*"
 flask-restplus = "*"
+awscli = "*"
 
 [requires]
 python_version = "3.7"

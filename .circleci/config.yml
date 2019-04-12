@@ -1,0 +1,47 @@
+version: 2
+
+jobs:
+
+  deploy_front_to_s3:
+    docker:
+      - image: circleci/python:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install awscil on pipenv
+          command: pipenv install --skip-lock
+      - run:
+          name: Sync front dir to S3 bucket
+          command: |
+              pipenv run aws s3 sync . s3://smartcheck.gq 
+              pipenv run aws cloudfront create-invalidation --distribution-id E1UAU50C9LPFIL --paths /*
+          working_directory: ~/repo/front
+  
+  deploy_app_to_apigateway:
+    docker:
+      - image: circleci/python:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install zappa on pipenv
+          command: pipenv install --skip-lock
+      - run:
+          name: Deploy AWS API resources with zappa
+          command: |
+              pipenv run zappa update
+
+workflows:
+  version: 2
+
+  build-deploy:
+    jobs:
+      - deploy_front_to_s3:
+          filters:
+            branches:
+              only: master
+      - deploy_app_to_apigateway:
+          filters:
+            branches:
+              only: master
