@@ -22,3 +22,4 @@ apiRestful = Api(apiBlueprint,
 # API Routing with @apiRestful.route
 from app.api.admin import *
 from app.api.index import *
+from app.api.member import *
